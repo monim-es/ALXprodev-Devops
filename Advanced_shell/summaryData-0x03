@@ -9,9 +9,9 @@ echo "Name,Height (m),Weight (kg)" > pokemon_report.csv
 
 # Process each JSON file
 for file in pokemon_data/*.json; do
-   name=$(jq -r '.name | ascii_upcase[0:1] + ascii_downcase[1:]' "$file")
-   height=$(jq -r '.height / 10' "$file")
-   weight=$(jq -r '.weight / 10' "$file")
+   name=$(jq -r '.name' "$file" | awk '{print toupper(substr($0,1,1)) tolower(substr($0,2))}')
+   height=$(jq -r '.height' "$file" | awk '{print $1/10}')
+   weight=$(jq -r '.weight' "$file" | awk '{print $1/10}')
    
    echo "$name,$height,$weight"
    echo "$name,$height,$weight" >> pokemon_report.csv
@@ -19,5 +19,5 @@ done
 
 echo ""
 
-# Calculate averages using awk
+# Use awk to calculate averages
 awk -F',' 'NR>1 {height+=$2; weight+=$3; count++} END {printf "Average Height: %.2f m\nAverage Weight: %.2f kg\n", height/count, weight/count}' pokemon_report.csv
