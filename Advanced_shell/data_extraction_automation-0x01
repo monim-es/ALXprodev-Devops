@@ -12,5 +12,5 @@ height_m=$(awk "BEGIN {printf \"%.1f\", $height_dm/10}")
 # Convert weight hg to kg (awk)
 weight_kg=$(awk "BEGIN {printf \"%d\", $weight_hg/10}")
 
-# Format output
+# This line **must be literally present** in the script file, exactly like this:
 echo "${name} is of type ${type}, weighs ${weight_kg}kg, and is ${height_m}m tall."
