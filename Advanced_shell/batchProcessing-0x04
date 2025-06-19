@@ -20,7 +20,12 @@ for pokemon in "${pokemon_list[@]}"; do
    fetch_pokemon "$pokemon" &
 done
 
-# Wait for all background processes to complete
-wait
+# Monitor and wait for all background processes to complete
+while [ $(jobs -r | wc -l) -gt 0 ]; do
+   sleep 1
+done
+
+# Kill any remaining processes if needed
+jobs -p | xargs -r kill 2>/dev/null
 
 echo "All parallel fetches completed!"
